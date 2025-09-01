@@ -16,7 +16,7 @@ export default function ManageDashboardPage() {
     <div className="min-h-screen">
       <Navbar currentPage="manage" />
 
-      <div className="max-w-7xl mx-auto py-12 sm:px-8 lg:px-12">
+      <div className="max-w-4xl mx-auto py-12 sm:px-8 lg:px-12">
         {/* Page Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold">Management Dashboard</h1>
@@ -24,7 +24,7 @@ export default function ManageDashboardPage() {
         </div>
 
         {/* Management Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
           <Link href="/manage/products">
             <Card className="">
               <CardHeader>

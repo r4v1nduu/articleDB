@@ -12,7 +12,7 @@ export default function AddArticlePage() {
 
   return (
     <div className="min-h-screen">
-      <Navbar currentPage="add" />
+      <Navbar currentPage="home" />
 
       <div className="max-w-4xl mx-auto py-12 sm:px-8 lg:px-12">
         {/* Page Header */}

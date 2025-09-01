@@ -97,11 +97,7 @@ export default function ArticleAddForm({
       e.preventDefault();
 
       const { product, subject, body } = formData;
-      if (
-        !product.trim() ||
-        !subject.trim() ||
-        !body.trim()
-      ) {
+      if (!product.trim() || !subject.trim() || !body.trim()) {
         toast.warning("Please fill in all fields");
         return;
       }
@@ -196,7 +192,10 @@ export default function ArticleAddForm({
                           key="n/a-product"
                           value="N/A"
                           onSelect={() => {
-                            setFormData((prev) => ({ ...prev, product: "N/A" }));
+                            setFormData((prev) => ({
+                              ...prev,
+                              product: "N/A",
+                            }));
                             setProductOpen(false);
                           }}
                         >
@@ -242,6 +241,44 @@ export default function ArticleAddForm({
                 </PopoverContent>
               </Popover>
             </div>
+            <div>
+              <Label className="block text-sm font-medium text-foreground mb-2">
+                Date <span className="text-red-500">*</span>
+              </Label>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    data-empty={!formData.date}
+                    className="data-[empty=true]:text-muted-foreground w-full justify-start text-left font-normal disabled:cursor-not-allowed"
+                    disabled={isLoading}
+                  >
+                    <CalendarIcon />
+                    {formData.date ? (
+                      format(new Date(formData.date), "PPP")
+                    ) : (
+                      <span>Pick a date</span>
+                    )}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0">
+                  <Calendar
+                    mode="single"
+                    selected={
+                      formData.date ? new Date(formData.date) : undefined
+                    }
+                    onSelect={(date) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        date: date
+                          ? date.toISOString()
+                          : new Date().toISOString(),
+                      }))
+                    }
+                  />
+                </PopoverContent>
+              </Popover>
+            </div>
           </div>
 
           <div>
@@ -274,43 +311,6 @@ export default function ArticleAddForm({
               className="w-full disabled:cursor-not-allowed resize-none"
               disabled={isLoading}
             />
-          </div>
-
-          <div>
-            <Label className="block text-sm font-medium text-foreground mb-2">
-              Date <span className="text-red-500">*</span>
-            </Label>
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  data-empty={!formData.date}
-                  className="data-[empty=true]:text-muted-foreground w-full justify-start text-left font-normal disabled:cursor-not-allowed"
-                  disabled={isLoading}
-                >
-                  <CalendarIcon />
-                  {formData.date ? (
-                    format(new Date(formData.date), "PPP")
-                  ) : (
-                    <span>Pick a date</span>
-                  )}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0">
-                <Calendar
-                  mode="single"
-                  selected={formData.date ? new Date(formData.date) : undefined}
-                  onSelect={(date) =>
-                    setFormData((prev) => ({
-                      ...prev,
-                      date: date
-                        ? date.toISOString()
-                        : new Date().toISOString(),
-                    }))
-                  }
-                />
-              </PopoverContent>
-            </Popover>
           </div>
 
           <div className="flex gap-3 pt-4">
