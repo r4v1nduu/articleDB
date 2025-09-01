@@ -6,7 +6,6 @@ const nonEmptyString = z.string().trim().min(1, { message: "Cannot be empty" });
 // Schema for creating a new article
 export const createArticleSchema = z.object({
   product: nonEmptyString,
-  customer: nonEmptyString,
   subject: z.string().trim().min(1, { message: "Subject cannot be empty" }),
   body: z.string().trim().min(1, { message: "Body cannot be empty" }),
   date: z.string().datetime({ message: "Invalid date format" }),
@@ -16,7 +15,6 @@ export const createArticleSchema = z.object({
 export const updateArticleSchema = z
   .object({
     product: nonEmptyString.optional(),
-    customer: nonEmptyString.optional(),
     subject: z.string().trim().min(1).optional(),
     body: z.string().trim().min(1).optional(),
     date: z.string().datetime({ message: "Invalid date format" }).optional(),

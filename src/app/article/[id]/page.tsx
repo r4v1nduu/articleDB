@@ -90,7 +90,6 @@ export default function ViewArticlePage() {
                 <CardTitle className="break-words">{article.subject}</CardTitle>
                 <CardDescription>
                   <span className="mr-4"><strong>Product:</strong> {article.product}</span>
-                  <span className="mr-4"><strong>Customer:</strong> {article.customer}</span>
                   <span><strong>Date:</strong> {new Date(article.date).toLocaleString()}</span>
                 </CardDescription>
               </CardHeader>

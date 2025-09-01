@@ -25,19 +25,6 @@ export default function ManageDashboardPage() {
 
         {/* Management Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-          <Link href="/manage/customers">
-            <Card className="">
-              <CardHeader>
-                <CardTitle className="flex items-center">
-                  <Users className="mr-2" />
-                  Manage Customers
-                </CardTitle>
-                <CardDescription>
-                  Add, edit, and remove customers.
-                </CardDescription>
-              </CardHeader>
-            </Card>
-          </Link>
           <Link href="/manage/products">
             <Card className="">
               <CardHeader>

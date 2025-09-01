@@ -27,16 +27,7 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { useQuery } from "@tanstack/react-query";
-import { Customer } from "@/types/customer";
 import { Product } from "@/types/product";
-
-const fetchCustomers = async (): Promise<Customer[]> => {
-  const res = await fetch("/api/customers");
-  if (!res.ok) {
-    throw new Error("Failed to fetch customers");
-  }
-  return res.json();
-};
 
 const fetchProducts = async (): Promise<Product[]> => {
   const res = await fetch("/api/products");
@@ -65,22 +56,16 @@ export default function ArticleAddForm({
 }: ArticleAddFormProps) {
   const [formData, setFormData] = useState<ArticleCreate>({
     product: "",
-    customer: "",
     subject: "",
     body: "",
     date: new Date().toISOString(),
   });
 
   const [productOpen, setProductOpen] = useState(false);
-  const [customerOpen, setCustomerOpen] = useState(false);
 
   const { data: products, isLoading: productsLoading } = useQuery<Product[]>({
     queryKey: ["products"],
     queryFn: fetchProducts,
-  });
-  const { data: customers, isLoading: customersLoading } = useQuery<Customer[]>({
-    queryKey: ["customers"],
-    queryFn: fetchCustomers,
   });
 
   const createArticleMutation = useCreateArticle();
@@ -91,7 +76,6 @@ export default function ArticleAddForm({
     if (mode === "edit" && initialData) {
       setFormData({
         product: initialData.product,
-        customer: initialData.customer,
         subject: initialData.subject,
         body: initialData.body,
         date: initialData.date,
@@ -102,7 +86,6 @@ export default function ArticleAddForm({
   const resetForm = useCallback(() => {
     setFormData({
       product: "",
-      customer: "",
       subject: "",
       body: "",
       date: new Date().toISOString(),
@@ -113,10 +96,9 @@ export default function ArticleAddForm({
     async (e: React.FormEvent) => {
       e.preventDefault();
 
-      const { product, customer, subject, body } = formData;
+      const { product, subject, body } = formData;
       if (
         !product.trim() ||
-        !customer.trim() ||
         !subject.trim() ||
         !body.trim()
       ) {
@@ -133,7 +115,6 @@ export default function ArticleAddForm({
         } else if (mode === "edit" && initialData) {
           const updateData: ArticleUpdate = {
             product: formData.product,
-            customer: formData.customer,
             subject: formData.subject,
             body: formData.body,
             date: formData.date,
@@ -249,86 +230,6 @@ export default function ArticleAddForm({
                               className={cn(
                                 "ml-auto",
                                 formData.product === product.name
-                                  ? "opacity-100"
-                                  : "opacity-0"
-                              )}
-                            />
-                          </CommandItem>
-                        ))}
-                      </CommandGroup>
-                    </CommandList>
-                  </Command>
-                </PopoverContent>
-              </Popover>
-            </div>
-            <div>
-              <Label className="block text-sm font-medium text-foreground mb-2">
-                Customer <span className="text-red-500">*</span>
-              </Label>
-              <Popover open={customerOpen} onOpenChange={setCustomerOpen}>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    role="combobox"
-                    aria-expanded={customerOpen}
-                    className="w-full justify-between disabled:cursor-not-allowed"
-                    disabled={isLoading || customersLoading}
-                  >
-                    {formData.customer
-                      ? customers?.find(
-                          (customer) => customer.name === formData.customer
-                        )?.name ?? "N/A"
-                      : "Select customer..."}
-                    <ChevronsUpDown className="opacity-50" />
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-full p-0">
-                  <Command>
-                    <CommandInput
-                      placeholder="Search customer..."
-                      className="h-9"
-                    />
-                    <CommandList>
-                      <CommandEmpty>No customer found.</CommandEmpty>
-                      <CommandGroup>
-                        <CommandItem
-                          key="n/a-customer"
-                          value="N/A"
-                          onSelect={() => {
-                            setFormData((prev) => ({ ...prev, customer: "N/A" }));
-                            setCustomerOpen(false);
-                          }}
-                        >
-                          N/A
-                          <Check
-                            className={cn(
-                              "ml-auto",
-                              formData.customer === "N/A"
-                                ? "opacity-100"
-                                : "opacity-0"
-                            )}
-                          />
-                        </CommandItem>
-                        {customers?.map((customer) => (
-                          <CommandItem
-                            key={customer._id}
-                            value={customer.name}
-                            onSelect={(currentValue) => {
-                              setFormData((prev) => ({
-                                ...prev,
-                                customer:
-                                  currentValue === formData.customer
-                                    ? ""
-                                    : currentValue,
-                              }));
-                              setCustomerOpen(false);
-                            }}
-                          >
-                            {customer.name}
-                            <Check
-                              className={cn(
-                                "ml-auto",
-                                formData.customer === customer.name
                                   ? "opacity-100"
                                   : "opacity-0"
                               )}

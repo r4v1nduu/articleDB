@@ -1,7 +1,6 @@
 export interface Article {
   id: string;
   product: string;
-  customer: string;
   subject: string;
   body: string;
   date: string;
@@ -11,7 +10,6 @@ export interface Article {
 
 export interface ArticleCreate {
   product: string;
-  customer: string;
   subject: string;
   body: string;
   date: string;
@@ -19,7 +17,6 @@ export interface ArticleCreate {
 
 export interface ArticleUpdate {
   product?: string;
-  customer?: string;
   subject?: string;
   body?: string;
   date?: string;
@@ -28,7 +25,6 @@ export interface ArticleUpdate {
 export interface SearchResult {
   id: string;
   product: string;
-  customer: string;
   subject: string;
   body: string;
   date: string;
