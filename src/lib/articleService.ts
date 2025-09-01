@@ -12,7 +12,6 @@ import type {
 interface ArticleDocument {
   _id: ObjectId;
   product: string;
-  customer: string;
   subject: string;
   body: string;
   date: string;
@@ -47,7 +46,6 @@ export class ArticleService {
     return {
       id: article._id.toString(),
       product: article.product,
-      customer: article.customer,
       subject: article.subject,
       body: article.body,
       date: article.date,
@@ -174,7 +172,6 @@ export class ArticleService {
       results.push({
         id: articleDoc._id.toString(),
         product: articleDoc.product,
-        customer: articleDoc.customer,
         subject: articleDoc.subject,
         body: articleDoc.body,
         date: articleDoc.date,

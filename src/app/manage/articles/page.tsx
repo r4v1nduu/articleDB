@@ -59,7 +59,6 @@ export default function ViewArticlesPage() {
               {
                 id: article.id,
                 product: article.product,
-                customer: article.customer,
                 subject: article.subject,
                 body: article.body,
                 date: article.date,
@@ -88,7 +87,7 @@ export default function ViewArticlesPage() {
     <div className="min-h-screen">
       <Navbar currentPage="manage" />
 
-      <div className="max-w-7xl mx-auto py-12 sm:px-8 lg:px-12">
+      <div className="max-w-4xl mx-auto py-12 sm:px-8 lg:px-12">
         {/* Page Header */}
         <div className="mb-8 flex justify-between items-center">
           <div>
