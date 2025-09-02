@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/dialog";
 import { toast } from "@/lib/toast";
 import { highlightText, getSnippets } from "@/lib/highlight";
+import { Badge } from "@/components/ui/badge"
 
 interface ArticleListTableProps {
   searchResults?: SearchResponse | null;
@@ -217,17 +218,6 @@ export default function ArticleListTable({
                           : article.subject}
                       </h3>
                     </Link>
-                    <div className="flex items-center space-x-4 mt-1">
-                      <span className="text-sm text-muted-foreground">
-                        <strong>Product:</strong> {article.product}
-                      </span>
-                      <span className="text-sm text-muted-foreground">
-                        <strong>Customer:</strong> {article.customer}
-                      </span>
-                      <span className="text-sm text-muted-foreground">
-                        {new Date(article.date).toLocaleDateString()}
-                      </span>
-                    </div>
                     <div className="text-xs text-muted-foreground mt-1 break-all">
                       <strong>ID:</strong> <code>{article.id}</code>
                     </div>
@@ -238,18 +228,16 @@ export default function ArticleListTable({
                     <div className="flex items-center space-x-2 ml-4">
                       <Button
                         onClick={() => handleEditArticle(article)}
-                        variant="outline"
+                        variant="secondary"
                         size="sm"
-                        className="text-green-600 border-green-600 hover:bg-green-50 dark:text-green-400 dark:border-green-400 dark:hover:bg-green-900/20"
                       >
                         <PencilIcon className="h-4 w-4 mr-1" />
                         Edit
                       </Button>
                       <Button
                         onClick={() => startDelete(article)}
-                        variant="outline"
+                        variant="destructive"
                         size="sm"
-                        className="text-red-600 border-red-600 hover:bg-red-50 dark:text-red-400 dark:border-red-400 dark:hover:bg-red-900/20"
                       >
                         <TrashIcon className="h-4 w-4 mr-1" />
                         Delete
@@ -263,12 +251,7 @@ export default function ArticleListTable({
 
                 {/* Tags/Categories - if you want to add them later */}
                 <div className="mt-3 flex items-center space-x-2">
-                  <span className="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded dark:bg-blue-900/30 dark:text-blue-300">
-                    {article.product}
-                  </span>
-                  <span className="inline-block bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded dark:bg-gray-800 dark:text-gray-300">
-                    {article.customer}
-                  </span>
+                  <Badge variant="secondary">{article.product}</Badge>
                 </div>
               </div>
             ))
@@ -340,7 +323,7 @@ export default function ArticleListTable({
           )}
           <DialogFooter>
             <DialogClose asChild>
-              <Button variant="outline">Cancel</Button>
+              <Button variant="secondary">Cancel</Button>
             </DialogClose>
             <Button
               onClick={handleDeleteArticle}

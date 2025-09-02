@@ -53,7 +53,7 @@ export default function ViewArticlePage() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navbar currentPage="home" />
-      <div className="max-w-5xl mx-auto py-8 px-6 sm:px-8 lg:px-12">
+      <div className="max-w-4xl mx-auto py-8 px-6 sm:px-8 lg:px-12">
         <div className="flex items-center mb-6">
           <Button onClick={handleBack} variant="outline" size="sm" className="mr-4">
             <ArrowLeftIcon className="h-4 w-4 mr-2" />
