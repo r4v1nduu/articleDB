@@ -1,6 +1,8 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { getProductsCollection } from "@/lib/database";
 import { z } from "zod";
+import { getToken } from "next-auth/jwt";
+import { Role } from "@/types/user";
 
 const productSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -21,7 +23,14 @@ export async function GET() {
   }
 }
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
+  const token = await getToken({ req: request });
+  if (!token || token.role !== Role.ADMIN) {
+    return NextResponse.json(
+      { success: false, error: "Unauthorized" },
+      { status: 401 }
+    );
+  }
   try {
     const json = await request.json();
     const data = productSchema.parse(json);

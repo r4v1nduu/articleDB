@@ -114,6 +114,11 @@ export async function getProductsCollection(): Promise<Collection> {
   return db.collection("products");
 }
 
+export async function getUsersCollection(): Promise<Collection> {
+  const db = await connectToMongo();
+  return db.collection("users");
+}
+
 // Database cleanup (for graceful shutdown)
 export async function closeDatabaseConnections(): Promise<void> {
   if (mongoClient) {

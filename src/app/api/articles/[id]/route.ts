@@ -40,11 +40,21 @@ export async function GET(
   }
 }
 
+import { getToken } from "next-auth/jwt";
+import { Role } from "@/types/user";
+
 // PUT /api/articles/[id] - Update an article
 export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ id:string }> }
 ) {
+  const token = await getToken({ req: request });
+  if (!token || token.role !== Role.ADMIN) {
+    return NextResponse.json(
+      { success: false, error: "Unauthorized" },
+      { status: 401 }
+    );
+  }
   try {
     const { id } = await params;
     const body = await request.json();
@@ -96,9 +106,16 @@ export async function PUT(
 
 // DELETE /api/articles/[id] - Delete an article
 export async function DELETE(
-  _request: NextRequest,
+  request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const token = await getToken({ req: request });
+  if (!token || token.role !== Role.ADMIN) {
+    return NextResponse.json(
+      { success: false, error: "Unauthorized" },
+      { status: 401 }
+    );
+  }
   try {
     const { id } = await params;
 

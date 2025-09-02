@@ -68,8 +68,17 @@ export async function GET(request: NextRequest) {
   }
 }
 
+import { getToken } from "next-auth/jwt";
 // POST /api/articles - Create a new article (optimized)
 export async function POST(request: NextRequest) {
+  const token = await getToken({ req: request });
+  if (!token) {
+    return NextResponse.json(
+      { success: false, error: "Unauthorized" },
+      { status: 401 }
+    );
+  }
+
   const startTime = Date.now();
 
   try {

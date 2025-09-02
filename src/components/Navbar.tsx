@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
 import Link from "next/link";
 import { CogIcon } from "@heroicons/react/24/outline";
+import { useSession, signIn, signOut } from "next-auth/react";
+import { Role } from "@/types/user";
 
 interface NavbarProps {
   currentPage?: "home" | "manage";
@@ -17,14 +19,13 @@ const navigation = [
     current: false,
     page: "manage",
     icon: CogIcon,
+    adminOnly: true,
   },
 ];
 
-function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(" ");
-}
-
 export default function Navbar({ currentPage = "home" }: NavbarProps) {
+  const { data: session } = useSession();
+
   // Update navigation to mark current page
   const updatedNavigation = navigation.map((item) => ({
     ...item,
@@ -43,23 +44,44 @@ export default function Navbar({ currentPage = "home" }: NavbarProps) {
             </div>
             <div className="hidden sm:ml-6 sm:block lg:px-6">
               <div className="flex space-x-4">
-                {updatedNavigation.map((item) => (
-                  <Link key={item.name} href={item.href}>
-                    <Button variant="outline" size="sm">
-                      <div className="flex items-center space-x-2">
-                        <item.icon className="h-5 w-5" aria-hidden="true" />
-                        <span>{item.name}</span>
-                      </div>
-                    </Button>
-                  </Link>
-                ))}
+                {session &&
+                  updatedNavigation.map(
+                    (item) =>
+                      (!item.adminOnly ||
+                        (item.adminOnly && session.user?.role === Role.ADMIN)) && (
+                        <Link key={item.name} href={item.href}>
+                          <Button variant="outline" size="sm">
+                            <div className="flex items-center space-x-2">
+                              <item.icon
+                                className="h-5 w-5"
+                                aria-hidden="true"
+                              />
+                              <span>{item.name}</span>
+                            </div>
+                          </Button>
+                        </Link>
+                      )
+                  )}
               </div>
             </div>
           </div>
 
           <div className="absolute inset-y-0 right-0 flex items-center sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-            {/* Theme Toggle */}
-            <div>
+            <div className="flex items-center space-x-4">
+              {session ? (
+                <>
+                  <span className="text-sm font-medium">
+                    {session.user?.email}
+                  </span>
+                  <Button variant="outline" size="sm" onClick={() => signOut()}>
+                    Logout
+                  </Button>
+                </>
+              ) : (
+                <Button variant="outline" size="sm" onClick={() => signIn()}>
+                  Login
+                </Button>
+              )}
               <ThemeToggle />
             </div>
           </div>

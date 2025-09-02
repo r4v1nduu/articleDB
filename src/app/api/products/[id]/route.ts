@@ -1,7 +1,9 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { getProductsCollection } from "@/lib/database";
 import { ObjectId } from "mongodb";
 import { z } from "zod";
+import { getToken } from "next-auth/jwt";
+import { Role } from "@/types/user";
 
 const productSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -42,9 +44,16 @@ export async function GET(
 }
 
 export async function PUT(
-  request: Request,
+  request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const token = await getToken({ req: request });
+  if (!token || token.role !== Role.ADMIN) {
+    return NextResponse.json(
+      { success: false, error: "Unauthorized" },
+      { status: 401 }
+    );
+  }
   try {
     const { id } = await params;
     if (!ObjectId.isValid(id)) {
@@ -84,9 +93,16 @@ export async function PUT(
 }
 
 export async function DELETE(
-  _request: Request,
+  request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const token = await getToken({ req: request });
+  if (!token || token.role !== Role.ADMIN) {
+    return NextResponse.json(
+      { success: false, error: "Unauthorized" },
+      { status: 401 }
+    );
+  }
   try {
     const { id } = await params;
     if (!ObjectId.isValid(id)) {

@@ -23,3 +23,17 @@ export const updateArticleSchema = z
     (data) => Object.keys(data).length > 0,
     { message: "At least one field must be provided for an update" }
   );
+
+// Schema for creating a new user
+export const createUserSchema = z.object({
+  email: z.string().email({ message: "Invalid email address" }),
+  password: z
+    .string()
+    .min(8, { message: "Password must be at least 8 characters long" }),
+});
+
+// Schema for logging in a user
+export const loginUserSchema = z.object({
+  email: z.string().email({ message: "Invalid email address" }),
+  password: z.string().min(1, { message: "Password cannot be empty" }),
+});
