@@ -9,7 +9,7 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/card";
-import { Users, ShoppingCart, FileText } from "lucide-react";
+import { ShoppingCart, FileText } from "lucide-react";
 
 export default function ManageDashboardPage() {
   return (
