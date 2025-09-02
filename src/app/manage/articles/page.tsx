@@ -144,7 +144,6 @@ export default function ViewArticlesPage() {
                         {
                           id: article.id,
                           product: article.product,
-                          customer: article.customer,
                           subject: article.subject,
                           body: article.body,
                           date: article.date,
